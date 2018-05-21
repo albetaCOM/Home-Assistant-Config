@@ -1,0 +1,39 @@
+alarm_tripped:
+#  alias: Alarma script
+  sequence:
+#    - service: shell_command.snapshot
+#    - delay:
+#        seconds: 1
+    - service: notify.email
+      data:
+        title: 'Alerta de intrusió'
+        message: ' Alerta de intrusió a casa!!'
+#        data:
+#          images:
+#            - /home/pi/snapshot1.jpg
+#            - /home/pi/snapshot2.jpg     
+
+alarm_arm_away:
+  sequence:
+    service: alarm_control_panel.alarm_arm_away
+    entity_id: alarm_control_panel.house
+alarm_arm_home:
+  sequence:
+    service: alarm_control_panel.alarm_arm_home
+    entity_id: alarm_control_panel.house
+alarm_disarm:
+  sequence:
+    service: alarm_control_panel.alarm_disarm
+    entity_id: alarm_control_panel.house
+    data:
+      code: !secret alarm_code   
+
+notify_email:
+  sequence:
+    - condition: state
+      entity_id: switch.email_notifications
+      state: 'on'
+    - service: notify.email
+      data_template:
+        title: "{{ title }}"
+        message: "{{ message }}"

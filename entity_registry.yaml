@@ -1,0 +1,536 @@
+media_player.menjador:
+  name:
+  platform: cast
+  unique_id: 8f57f97b-c080-58c1-dcc8-cb9dcbfa2ffc
+media_player.casa:
+  name:
+  platform: cast
+  unique_id: 5c19e7f0-d779-4930-b978-cd3f76cf5974
+light.llum_safreig:
+  name:
+  platform: tradfri
+  unique_id: light-7e0c555204400003-65565
+light.llum_distribuidor:
+  name:
+  platform: tradfri
+  unique_id: light-7e0c555204400003-65539
+light.llum_sofa_1:
+  name:
+  platform: tradfri
+  unique_id: light-7e0c555204400003-65557
+light.llum_exterior_est:
+  name:
+  platform: tradfri
+  unique_id: light-7e0c555204400003-65542
+light.llum_exterior_sud:
+  name:
+  platform: tradfri
+  unique_id: light-7e0c555204400003-65564
+light.llum_sofa_2:
+  name:
+  platform: tradfri
+  unique_id: light-7e0c555204400003-65556
+light.sofa:
+  name:
+  platform: tradfri
+  unique_id: group-7e0c555204400003-150998
+light.safreig:
+  name:
+  platform: tradfri
+  unique_id: group-7e0c555204400003-151001
+light.distribuidor:
+  name:
+  platform: tradfri
+  unique_id: group-7e0c555204400003-136553
+light.exterior:
+  name:
+  platform: tradfri
+  unique_id: group-7e0c555204400003-150999
+binary_sensor.multisensor_estudi_sensor:
+  name:
+  platform: zwave
+  unique_id: 2-72057594076463104
+sensor.multisensor_estudi_temperature:
+  name:
+  platform: zwave
+  unique_id: 2-72057594076479506
+sensor.multisensor_estudi_luminance:
+  name:
+  platform: zwave
+  unique_id: 2-72057594076479538
+sensor.multisensor_estudi_relative_humidity:
+  name:
+  platform: zwave
+  unique_id: 2-72057594076479570
+sensor.multisensor_estudi_alarm_type:
+  name:
+  platform: zwave
+  unique_id: 2-72057594077528065
+sensor.multisensor_estudi_alarm_level:
+  name:
+  platform: zwave
+  unique_id: 2-72057594077528081
+sensor.multisensor_estudi_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 2-72057594077528097
+sensor.multisensor_estudi_burglar:
+  name:
+  platform: zwave
+  unique_id: 2-72057594077528225
+binary_sensor.balconera_estudi_sensor:
+  name:
+  platform: zwave
+  unique_id: 4-72057594110017536
+binary_sensor.balconera_est_sensor:
+  name:
+  platform: zwave
+  unique_id: 5-72057594126794752
+binary_sensor.porta_entrada_sensor:
+  name:
+  platform: zwave
+  unique_id: 6-72057594143571968
+binary_sensor.multisensor_menjador_sensor:
+  name:
+  platform: zwave
+  unique_id: 7-72057594160349184
+sensor.multisensor_menjador_general:
+  name:
+  platform: zwave
+  unique_id: 7-72057594162118657
+cover.persiana_est_level:
+  name: Persiana est
+  platform: zwave
+  unique_id: 9-72057594193739777
+sensor.persiana_est_power:
+  name:
+  platform: zwave
+  unique_id: 9-72057594193920066
+sensor.persiana_est_energy:
+  name:
+  platform: zwave
+  unique_id: 9-72057594193936386
+sensor.persiana_est_power_2:
+  name:
+  platform: zwave
+  unique_id: 9-72057594193936514
+sensor.persiana_est_exporting:
+  name:
+  platform: zwave
+  unique_id: 9-72057594193936896
+cover.persiana_sud_level:
+  name: Persiana sud
+  platform: zwave
+  unique_id: 10-72057594210516993
+sensor.persiana_sud_power:
+  name:
+  platform: zwave
+  unique_id: 10-72057594210697282
+sensor.persiana_sud_energy:
+  name:
+  platform: zwave
+  unique_id: 10-72057594210713602
+sensor.persiana_sud_power_2:
+  name:
+  platform: zwave
+  unique_id: 10-72057594210713730
+sensor.persiana_sud_exporting:
+  name:
+  platform: zwave
+  unique_id: 10-72057594210714112
+switch.wall_plug_switch:
+  name: Llum peixera
+  platform: zwave
+  unique_id: 11-72057594227277824
+sensor.wall_plug_power:
+  name:
+  platform: zwave
+  unique_id: 11-72057594227474498
+sensor.wall_plug_energy:
+  name:
+  platform: zwave
+  unique_id: 11-72057594227490818
+sensor.wall_plug_power_2:
+  name:
+  platform: zwave
+  unique_id: 11-72057594227490946
+sensor.wall_plug_exporting:
+  name:
+  platform: zwave
+  unique_id: 11-72057594227491328
+switch.llums_cuina_switch:
+  name: Llums cuina
+  platform: zwave
+  unique_id: 12-72057594244055040
+switch.llums_cuina_switch_2:
+  name: Llum peninsula
+  platform: zwave
+  unique_id: 12-144115188281982976
+switch.llums_cuina_switch_3:
+  name: Llum cuina
+  platform: zwave
+  unique_id: 12-216172782319910912
+sensor.llums_cuina_energy:
+  name:
+  platform: zwave
+  unique_id: 12-72057594244268034
+sensor.llums_cuina_energy_2:
+  name:
+  platform: zwave
+  unique_id: 12-144115188282195970
+sensor.llums_cuina_energy_3:
+  name:
+  platform: zwave
+  unique_id: 12-216172782320123906
+sensor.llums_cuina_previous_reading:
+  name:
+  platform: zwave
+  unique_id: 12-72057594244268050
+sensor.llums_cuina_power:
+  name:
+  platform: zwave
+  unique_id: 12-72057594244268162
+sensor.llums_cuina_previous_reading_2:
+  name:
+  platform: zwave
+  unique_id: 12-144115188282195986
+sensor.llums_cuina_power_2:
+  name:
+  platform: zwave
+  unique_id: 12-144115188282196098
+sensor.llums_cuina_previous_reading_3:
+  name:
+  platform: zwave
+  unique_id: 12-216172782320123922
+sensor.llums_cuina_power_3:
+  name:
+  platform: zwave
+  unique_id: 12-216172782320124034
+cover.persiana_estudi_switch:
+  name:
+  platform: zwave
+  unique_id: 13-72057594260832256
+switch.persiana_estudi_switch:
+  name:
+  platform: zwave
+  unique_id: 13-72057594260832256
+cover.persiana_estudi_level:
+  name: Persiana estudi
+  platform: zwave
+  unique_id: 13-72057594260848641
+sensor.persiana_estudi_energy:
+  name:
+  platform: zwave
+  unique_id: 13-72057594261045250
+sensor.persiana_estudi_previous_reading:
+  name:
+  platform: zwave
+  unique_id: 13-72057594261045266
+sensor.persiana_estudi_power:
+  name:
+  platform: zwave
+  unique_id: 13-72057594261045378
+light.dimmer_jardi_level:
+  name: Llum jardi
+  platform: zwave
+  unique_id: 14-72057594277625857
+sensor.energy_meter_energy:
+  name:
+  platform: zwave
+  unique_id: 15-72057594294599682
+sensor.energy_meter_energy_2:
+  name:
+  platform: zwave
+  unique_id: 15-144115188332527618
+sensor.energy_meter_previous_reading:
+  name:
+  platform: zwave
+  unique_id: 15-72057594294599698
+sensor.energy_meter_power:
+  name:
+  platform: zwave
+  unique_id: 15-72057594294599810
+sensor.energy_meter_voltage:
+  name:
+  platform: zwave
+  unique_id: 15-72057594294599938
+sensor.energy_meter_current:
+  name:
+  platform: zwave
+  unique_id: 15-72057594294600002
+sensor.energy_meter_power_2:
+  name:
+  platform: zwave
+  unique_id: 15-144115188332527746
+sensor.energy_meter_voltage_2:
+  name:
+  platform: zwave
+  unique_id: 15-144115188332527874
+sensor.energy_meter_current_2:
+  name:
+  platform: zwave
+  unique_id: 15-144115188332527938
+sensor.termostat_temperature:
+  name:
+  platform: zwave
+  unique_id: 16-72057594311360530
+climate.termostat_heating_1:
+  name:
+  platform: zwave
+  unique_id: 16-72057594311655442
+switch.taula_jardi_switch:
+  name: LLum taula jardi
+  platform: zwave
+  unique_id: 19-72057594361495552
+media_player.cuina:
+  name:
+  platform: cast
+  unique_id: 9a255437-d7e4-91da-ac7a-ce1948aec7af
+media_player.bedroom:
+  name:
+  platform: cast
+  unique_id: 85ff1164-86d3-cf44-b3a7-1b6d50e350ab
+media_player.studio:
+  name:
+  platform: cast
+  unique_id: cbe79b76-6b09-5258-da8d-9f3555e26aad
+sensor.multisensor_menjador_luminance:
+  name:
+  platform: zwave
+  unique_id: 7-72057594160365618
+sensor.control_acces_alarm_type:
+  name:
+  platform: zwave
+  unique_id: 17-72057594329186305
+sensor.control_acces_alarm_level:
+  name:
+  platform: zwave
+  unique_id: 17-72057594329186321
+switch.control_acces_switch:
+  name: Control d'acces
+  platform: zwave
+  unique_id: 17-72057594327941120
+sensor.multisensor_menjador_temperature:
+  name:
+  platform: zwave
+  unique_id: 7-72057594160365586
+sensor.control_acces_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 17-72057594329186337
+sensor.control_acces_access_control:
+  name:
+  platform: zwave
+  unique_id: 17-72057594329186449
+sensor.control_acces_burglar:
+  name:
+  platform: zwave
+  unique_id: 17-72057594329186465
+sensor.porta_entrada_alarm_type:
+  name:
+  platform: zwave
+  unique_id: 6-72057594144636929
+sensor.porta_entrada_alarm_level:
+  name:
+  platform: zwave
+  unique_id: 6-72057594144636945
+sensor.balconera_est_alarm_type:
+  name:
+  platform: zwave
+  unique_id: 5-72057594127859713
+sensor.balconera_est_alarm_level:
+  name:
+  platform: zwave
+  unique_id: 5-72057594127859729
+sensor.multisensor_distribuidor_alarm_type:
+  name:
+  platform: zwave
+  unique_id: 8-72057594178191361
+sensor.multisensor_distribuidor_alarm_level:
+  name:
+  platform: zwave
+  unique_id: 8-72057594178191377
+binary_sensor.multisensor_distribuidor_sensor:
+  name:
+  platform: zwave
+  unique_id: 8-72057594177126400
+sensor.multisensor_distribuidor_temperature:
+  name:
+  platform: zwave
+  unique_id: 8-72057594177142802
+sensor.multisensor_distribuidor_luminance:
+  name:
+  platform: zwave
+  unique_id: 8-72057594177142834
+sensor.multisensor_distribuidor_relative_humidity:
+  name:
+  platform: zwave
+  unique_id: 8-72057594177142866
+sensor.multisensor_distribuidor_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 8-72057594178191393
+sensor.multisensor_distribuidor_burglar:
+  name:
+  platform: zwave
+  unique_id: 8-72057594178191521
+sensor.alarm_type:
+  name:
+  platform: zwave
+  unique_id: 22-72057594413072385
+sensor.alarm_level:
+  name:
+  platform: zwave
+  unique_id: 22-72057594413072401
+binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor:
+  name:
+  platform: zwave
+  unique_id: 22-72057594412007424
+sensor.fibaro_system_fgdw002_door_opening_sensor_2_temperature:
+  name:
+  platform: zwave
+  unique_id: 22-72057594412023826
+sensor.fibaro_system_fgdw002_door_opening_sensor_2_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 22-72057594413072417
+sensor.fibaro_system_fgdw002_door_opening_sensor_2_heat:
+  name:
+  platform: zwave
+  unique_id: 22-72057594413072497
+sensor.fibaro_system_fgdw002_door_opening_sensor_2_access_control:
+  name:
+  platform: zwave
+  unique_id: 22-72057594413072529
+sensor.fibaro_system_fgdw002_door_opening_sensor_2_burglar:
+  name:
+  platform: zwave
+  unique_id: 22-72057594413072545
+sensor.fibaro_system_fgdw002_door_opening_sensor_2_power_management:
+  name:
+  platform: zwave
+  unique_id: 22-72057594413072561
+sensor.alarm_type_2:
+  name:
+  platform: zwave
+  unique_id: 23-72057594429849601
+sensor.alarm_level_2:
+  name:
+  platform: zwave
+  unique_id: 23-72057594429849617
+binary_sensor.sensor:
+  name:
+  platform: zwave
+  unique_id: 23-72057594428784640
+sensor.heiman_door_sensor_hs1dsz_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 23-72057594429849633
+sensor.heiman_door_sensor_hs1dsz_access_control:
+  name:
+  platform: zwave
+  unique_id: 23-72057594429849745
+sensor.heiman_door_sensor_hs1dsz_burglar:
+  name:
+  platform: zwave
+  unique_id: 23-72057594429849761
+sensor.alarm_type_3:
+  name:
+  platform: zwave
+  unique_id: 24-72057594446626817
+sensor.alarm_level_3:
+  name:
+  platform: zwave
+  unique_id: 24-72057594446626833
+switch.switch:
+  name:
+  platform: zwave
+  unique_id: 24-72057594445381632
+sensor.schlage_link_mini_keypad_rfid_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 24-72057594446626849
+sensor.schlage_link_mini_keypad_rfid_access_control:
+  name:
+  platform: zwave
+  unique_id: 24-72057594446626961
+sensor.schlage_link_mini_keypad_rfid_burglar:
+  name:
+  platform: zwave
+  unique_id: 24-72057594446626977
+zwave.aeotec_zw090_zstick_gen5_eu:
+  name:
+  platform: zwave
+  unique_id: node-1
+zwave.multisensor_estudi:
+  name:
+  platform: zwave
+  unique_id: node-2
+zwave.balconera_est:
+  name:
+  platform: zwave
+  unique_id: node-5
+zwave.porta_entrada:
+  name:
+  platform: zwave
+  unique_id: node-6
+zwave.multisensor_menjador:
+  name:
+  platform: zwave
+  unique_id: node-7
+zwave.persiana_est:
+  name:
+  platform: zwave
+  unique_id: node-9
+zwave.persiana_sud:
+  name:
+  platform: zwave
+  unique_id: node-10
+zwave.wall_plug:
+  name:
+  platform: zwave
+  unique_id: node-11
+zwave.llums_cuina:
+  name:
+  platform: zwave
+  unique_id: node-12
+zwave.persiana_estudi:
+  name:
+  platform: zwave
+  unique_id: node-13
+zwave.dimmer_jardi:
+  name:
+  platform: zwave
+  unique_id: node-14
+zwave.energy_meter:
+  name:
+  platform: zwave
+  unique_id: node-15
+zwave.termostat:
+  name:
+  platform: zwave
+  unique_id: node-16
+zwave.taula_jardi:
+  name:
+  platform: zwave
+  unique_id: node-19
+zwave.porta_cuina:
+  name:
+  platform: zwave
+  unique_id: node-22
+zwave.jardi_door:
+  name:
+  platform: zwave
+  unique_id: node-23
+zwave.access_control:
+  name:
+  platform: zwave
+  unique_id: node-24
+zwave.remotec_zrc90:
+  name:
+  platform: zwave
+  unique_id: node-25
+zwave.multisensor_distribuidor:
+  name:
+  platform: zwave
+  unique_id: node-8

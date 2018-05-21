@@ -1,0 +1,283 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 41.668712
+  longitude: 2.371958
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 274
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: Europe/Madrid
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+  cors_allowed_origins:
+    - http://192.168.1.99:7080
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  ignore:
+    - google_cast
+    - axis
+    - ikea_tradfri
+    - philips_hue
+
+# component is storing details in a database which then are handled by the history component.
+recorder:
+  purge_interval: 2
+  purge_keep_days: 5
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+logger:
+  default: warning
+  logs:
+    requests.packages.urllib3.connectionpool: critical
+    homeassistant.components.camera: critical
+
+zone:
+  name: Feina Alba
+  latitude: 41.48703
+  longitude: 2.17371
+  radius: 250      
+  icon: mdi:briefcase
+
+
+zone 2:
+  name: Escola
+  latitude: 41.641624
+  longitude: 2.359838
+  radius: 250 
+  icon: mdi:school
+  
+zone 3:
+  name: Feina JC
+  latitude: 41.5599767
+  longitude: 1.964739
+  radius: 281 
+  icon: mdi:briefcase
+  
+# Weather prediction
+sensor:
+  - platform: yr
+    name: temps
+    forecast: 24
+    monitored_conditions:
+      - temperature
+      - symbol
+      - precipitation
+      - humidity
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_use_percent
+      - type: processor_use
+  - platform: template
+    sensors:
+      alarm_time:
+        friendly_name: 'Time'
+        value_template: '{{ "%0.02d:%0.02d" | format(states("input_number.alarmhour") | int, states("input_number.alarmminutes") | int) }}'
+  - platform: supervisord
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+doorbird:
+  host: 192.168.1.80
+  username: !secret user_doorbird
+  password: !secret pwd_doorbird
+  doorbell_events: true
+  
+camera:
+  - platform: mjpeg
+    mjpeg_url: !secret url_cam_1
+    name: Camera jardi davant
+  - platform: mjpeg
+    mjpeg_url: !secret url_cam_2
+    name: Camera entrada
+  - platform: local_file
+    file_path: /tmp/porta_jardi_oberta.jpg
+    name: Foto porta jardi
+  - platform: local_file
+    file_path: /tmp/pati_derrere3.jpg
+    name: Foto jardi
+  - platform: local_file
+    file_path: /tmp/entrada3.jpg
+    name: Foto entrada
+  - platform: doorbird
+    name: Timbre
+    
+tradfri:
+  host: 192.168.1.95
+  
+rfxtrx:
+  device: /dev/serial/by-id/usb-RFXCOM_RFXtrx433_A1EMPJJ-if00-port0
+
+media_player:
+  - platform: webostv
+    host: 192.168.1.90 
+    mac: !secret tele_mac
+    name: Tele 
+  - platform: kodi
+    host: 192.168.1.53  
+  #google home, audio & chromecast    
+  - platform: cast
+  - platform: spotify
+    client_id: !secret spotify_id
+    client_secret: !secret spotify_secret
+    cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
+    #aliases:
+    #    abc123def456: 'Living Room'
+    #    9183abas000: 'Bed Room'
+    
+cover:
+  - platform: rfxtrx
+    automatic_add: False
+    signal_repetitions: 2
+    devices:
+      071a000001000101: # RFY   
+        name: Porta Garatge
+switch:
+  - platform: rfxtrx
+    automatic_add: True
+    devices:
+      0710000041010180:
+        name: rfx
+        fire_event: True
+  - platform: doorbird
+    switches:
+      - light_on
+      - open_door
+      
+input_number:
+  alarmhour:
+    name: Hora
+    icon: mdi:timer
+    initial: 6
+    min: 0
+    max: 23
+    step: 1
+  alarmminutes:
+    name: Minuts
+    icon: mdi:timer
+    initial: 30
+    min: 0
+    max: 59
+    step: 5
+
+input_boolean:
+  alarmweekday:
+    name: Els dies de la setmana 
+    initial: on
+    icon: mdi:calendar
+  alarmweekon:
+    name: Activada     
+    initial: on
+    
+
+          
+#          { states.sensor.fibaro_system_fgdw002_door_opening_sensor_2_access_control.state|float < ‘23’ } 
+#            {{ states('sensor.fibaro_system_fgdw002_door_opening_sensor_2_access_control')|float < 23 }}
+          
+binary_sensor:
+  - platform: template
+    sensors: 
+      kitchen_door:
+        device_class: opening
+        friendly_name: 'Porta cuina'
+        value_template: >-
+            {{ states('sensor.fibaro_system_fgdw002_door_opening_sensor_2_access_control')|float > 22 }}
+          
+notify:
+  - name: html5
+    platform: html5
+    gcm_api_key: !secret push_html5_key
+    gcm_sender_id: !secret push_html5_id
+  - name: pushbullet
+    platform: pushbullet
+    api_key: !secret pushbullet_key
+  - name: email
+    platform: smtp
+    server: smtp.gmail.com
+    port: 587
+    timeout: 15
+    sender: !secret mailsender
+    starttls: true
+    username: !secret mail_account
+    password: !secret mail_password
+    recipient: !secret mail_recipient
+    sender_name: My Home Assistant 
+
+
+    
+zwave:
+  usb_path: /dev/ttyACM0
+
+panel_iframe:
+  ide:
+    title: IDE
+    icon: mdi:code-braces
+    url: http://192.168.1.99:7681
+  dvr:
+    title: DVR
+    icon: mdi:camcorder
+    url: http://192.168.1.60  
+    
+shell_command:
+  take_snapshots: ./scripts/snapshot.pl
+  take_snapshot1_cam1: !secret cam1_snapshot_1
+  take_snapshot2_cam1: !secret cam1_snapshot_2
+  take_snapshot3_cam1: !secret cam1_snapshot_3
+  take_snapshot1_cam2: !secret cam2_snapshot_1
+  take_snapshot2_cam2: !secret cam2_snapshot_2
+  take_snapshot3_cam2: !secret cam2_snapshot_3
+  take_snapshot_porta_jardi: !secret snapshot_porta_jardi
+      
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+alarm_control_panel: !include alarm.yaml
+panel_custom: !include panel_custom.yaml

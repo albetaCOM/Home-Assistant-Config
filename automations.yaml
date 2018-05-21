@@ -1,0 +1,583 @@
+#- alias: '[Alarm] Panic Mode'
+#  trigger:
+#    platform: state
+#    entity_id: alarm_control_panel.house
+#    value_template: '{{ state.attributes.panic_mode }}'
+#    to: 'ACTIVE'
+#  action:
+#    service: activate_self_defence_robot
+
+# Automatitzacions llum jardi
+- id: jardi_on_on_sunset
+  alias: Turn on light when sun sets
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: sun
+    event: sunset
+    offset: +00:00:00
+  action:
+  - service: light.turn_on
+    entity_id:
+    - light.llum_exterior_est
+    - light.llum_exterior_sud
+    - light.dimmer_jardi_level
+    
+- id: jardi_off_on_sunrise
+  alias: Turn off light when sun rises
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: +00:00:00
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.taula_jardi_switch
+  - service: light.turn_off
+    entity_id:
+    - light.llum_exterior_est
+    - light.llum_exterior_sud
+    - light.dimmer_jardi_level
+    
+- id: jardi_off_when_late
+  alias: Turn off light when really late
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: 01:00:00
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.taula_jardi_switch
+  - service: light.turn_off
+    entity_id:
+    - light.llum_exterior_est
+    - light.llum_exterior_sud
+    - light.dimmer_jardi_level
+    
+- id: jardi_on_when_leaving_to_work
+  alias: Turn on light when leaving to work
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: 06:30:00
+  condition:
+    condition: sun
+    before: sunrise
+  action:
+  - service: light.turn_on
+    entity_id:
+    - light.llum_exterior_est
+    - light.llum_exterior_sud
+    - light.dimmer_jardi_level
+
+# Automatitzacions llum peixera
+- id: peixera_on_in_the_morning
+  alias: Turn on fish light in the morning
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: 08:00:00
+  action:
+  - service: switch.turn_on
+    entity_id:
+    - switch.wall_plug_switch
+    
+- id: peixera_off_at_night
+  alias: Turn off fish light at night
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: time
+    at: '22:00:00'
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.wall_plug_switch
+    
+# Automatitzacions del sistema de seguretat
+- id: porta_jardi_snapshot
+  alias: Snapshot when door open and armed
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.porta_jardi_sensor
+    to: 'on'
+  condition:
+    condition: state
+    entity_id: alarm_control_panel.house
+    state: armed_away
+  action:
+  - service: shell_command.take_snapshot_porta_jardi
+  - delay: 0:00:01
+  - service: notify.html5
+    data:
+      title: Porta Jardí
+      message: Porta del jardí oberta
+      data:
+        actions:
+        - action: disarm
+          title: Disarm alarm
+          icon: mdi:security-home
+  - service: notify.email
+    data_template:
+      title: Porta oberta jardi
+      message: S'ha obert la porta del jardí i l'alarma està armada.
+      data:
+        images:
+        - /tmp/porta_jardi_oberta.jpg
+ 
+ # Armem
+- id: control_acces_away
+  alias: Set control acces away
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.alarm_level_3
+    above: 254
+  action:
+  - service: alarm_control_panel.alarm_arm_away
+    entity_id: alarm_control_panel.house
+ 
+- id: set_armed
+  alias: Set Alarm Armed
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: armed_away
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.llums_cuina_switch_2
+    - switch.llums_cuina_switch_3
+    - switch.taula_jardi_switch
+    #- switch.llum_habitacio_matrimoni_switch
+  - service: light.turn_off
+    entity_id:
+    #- light.ventilador_sofa_level
+    - light.llum_distribuidor
+    - light.llum_sofa_1
+    - light.llum_sofa_2
+    - light.llum_safreig
+  - service: notify.html5
+    data:
+      title: Alarma
+      message: Alarma en mode away
+ 
+# Desarmem
+- id: control_acces_home
+  alias: Set control access home
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.alarm_level_3
+    below: 1
+  - platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: disarm
+  action:
+  - service: alarm_control_panel.alarm_disarm
+    entity_id: alarm_control_panel.house
+    data:
+      code: !secret alarm_code
+      
+- id: set_home
+  alias: Set Alarm Home
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: disarmed
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.sirena_switch
+  - service: notify.html5
+    data:
+      title: Alarma
+      message: Alarma desarmada
+     
+# Arming alarm
+- id: notify_on_alarm_arming
+  alias: Notify on alarm arming
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: pending
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.menjador
+    data:
+      volume_level: '.50'
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.menjador
+      message: Alarm will be armed in 30 seconds
+
+- id: notify_on_alarm_arming_20
+  alias: Notify on alarm arming for 20s
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: pending
+    for: 00:00:20
+  action:
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.menjador
+      message: 5 seconds      
+      
+- id: notify_on_alarm_armed_home
+  alias: Notify on alarm armed home
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: armed_home
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.casa
+    data:
+      volume_level: '.50'
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.casa
+      message: Alarm is armed in home mode
+           
+# Alarm warning     
+- id: alarm_warning
+  alias: Alarm warning
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: warning
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.casa
+    data:
+      volume_level: '.50'
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.casa
+      message: Alarm will be triggered in 30 seconds
+  - service: notify.html5
+    data:
+      title: Alarma
+      message: En mode warning
+      data:
+        actions:
+        - action: disarm
+          title: Disarm alarm
+          icon: mdi:security-home
+  - service: shell_command.take_snapshot1_cam1
+  - service: shell_command.take_snapshot1_cam2
+  - delay: 0:00:02
+  - service: shell_command.take_snapshot2_cam1
+  - service: shell_command.take_snapshot2_cam2
+  - delay: 0:00:02
+  - service: shell_command.take_snapshot3_cam1
+  - service: shell_command.take_snapshot3_cam2
+  - delay: 0:00:01
+  
+- id: notify_on_alarm_warning_20
+  alias: Notify on alarm warning for 20s
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: warning
+    for: 00:00:20
+  action:
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.menjador
+      message: 5 seconds
+      
+- id: notify_on_alarm_disarm
+  alias: Notify on alarm disarm
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: disarmed
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.casa
+    data:
+      volume_level: '.50'
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.casa
+      message: Alarm is disarmed.
+      
+# Alarm triggered
+  
+- id: alarm_triggered
+  alias: Alarm triggered
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: triggered
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.casa
+    data:
+      volume_level: '.80'
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.casa
+      message: Calling to the police.
+  - service: notify.html5
+    data:
+      title: Alarma
+      message: Intrusió. El sensor {{ trigger.to_state.attributes.changed_by }} ha
+        estat activat.
+      data:
+        actions:
+        - action: disarm
+          title: Disarm alarm
+          icon: mdi:security-home
+  - service: notify.email
+    data_template:
+      title: Alerta de intrusió
+      message: El sensor {{ trigger.to_state.attributes.changed_by }} ha estat activat.
+      data:
+        images:
+        - /tmp/porta_jardi_oberta.jpg
+        - /tmp/pati_derrere1.jpg
+        - /tmp/pati_derrere2.jpg
+        - /tmp/pati_derrere3.jpg
+        - /tmp/entrada1.jpg
+        - /tmp/entrada2.jpg
+        - /tmp/entrada3.jpg
+  #- service: switch.turn_on
+  #  entity_id:
+  #  - switch.sirena_switch
+  - service: shell_command.take_snapshot1_cam1
+  - service: shell_command.take_snapshot1_cam2
+  - delay: 0:00:02
+  - service: shell_command.take_snapshot2_cam1
+  - service: shell_command.take_snapshot2_cam2
+  - delay: 0:00:02
+  - service: shell_command.take_snapshot3_cam1
+  - service: shell_command.take_snapshot3_cam2
+  - delay: 0:00:01
+  - service: notify.email
+    data_template:
+      title: Alerta de intrusió (segón email)
+      message: El sensor {{ trigger.to_state.attributes.changed_by }} ha estat activat.
+      data:
+        images:
+        - /tmp/pati_derrere1.jpg
+        - /tmp/pati_derrere2.jpg
+        - /tmp/pati_derrere3.jpg
+        - /tmp/entrada1.jpg
+        - /tmp/entrada2.jpg
+        - /tmp/entrada3.jpg
+  - delay: 0:00:05
+  #- service: switch.turn_off
+  #  entity_id:
+  #  - switch.sirena_switch
+  
+  
+# Persianes
+  
+- id: close_covers_on_sunset
+  alias: Close covers after sun sets
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: sun
+    event: sunset
+    offset: +02:00:00
+  action:
+  - service: cover.close_cover
+    entity_id:
+    - cover.persiana_est_level
+    - cover.persiana_estudi_level
+    - cover.persiana_sud_level
+    - cover.porta_garatge
+- id: open_covers_on_sunrise
+  alias: Opens covers when sun rise
+  initial_state: true
+  hide_entity: false
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: -01:00:00
+  action:
+  - service: cover.open_cover
+    entity_id:
+    - cover.persiana_est_level
+    - cover.persiana_estudi_level
+    - cover.persiana_sud_level
+    
+# Timbre
+
+- id: door_bell
+  alias: Door bell ring
+  initial_state: true
+  trigger:
+  - platform: event
+    event_type: doorbird_doorbell
+#  - entity_id: binary_sensor.doorbell
+#    platform: state
+#    to: 'on'
+  action:
+  - service: logbook.log
+    data:
+      name: Doorbell
+      message: rang    
+  - data:
+      message: Estant trucant al timbre
+      title: Timbre
+    service: notify.html5
+  - data:
+      volume_level: '.80'
+    entity_id: media_player.casa
+    service: media_player.volume_set
+  - data:
+      entity_id: media_player.casa
+      media_content_id: http://192.168.1.99:8123/local/doorbell_1.mp3
+      media_content_type: audio/mp3
+    service: media_player.play_media
+    
+    
+# Porta jardi
+
+- id: porta_jardi_notification
+  alias: Notify when door open
+  initial_state: true
+  trigger:
+    platform: state
+    entity_id: binary_sensor.porta_jardi_sensor
+    to: 'on'
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.casa
+    data:
+      volume_level: '.60'
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.casa
+      message: Se ha abierto la puerta del jardín
+      language: es
+      
+# Despertador
+
+- id: Weekdays_alarm_clock
+  alias: Wake me up with bedroom light transition for weekdays
+  initial_state: true
+  trigger:
+  - platform: time
+    minutes: /1
+    seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.alarmweekon
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.alarmweekday
+    state: 'on'
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: template
+    value_template: '{{ now().strftime("%H:%M") == states.sensor.alarm_time.state
+      }}'
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.bedroom
+    data:
+      volume_level: '.50'
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.bedroom
+      media_content_id: http://192.168.1.99:8123/local/music/wakeup.mp3
+      media_content_type: audio/mp3
+
+- id: Weekend_alarm_clock
+  alias: Wake me up with bedroom light transition for weekend days
+  initial_state: true
+  trigger:
+  - platform: time
+    minutes: /1
+    seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.alarmweekon
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.alarmweekday
+    state: 'off'
+  - condition: time
+    weekday:
+    - sat
+    - sun
+  - condition: template
+    value_template: '{{ now().strftime("%H:%M") == states.sensor.alarm_time.state
+      }}'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.llum_habitacio_matrimoni_switch
+#    data:
+#      transition: 600
+#      brightness: 255
+
+
+# Llum safreig
+
+- id: llum_safreig_on
+  alias: llum safreig on
+  initial_state: true
+  trigger:
+  - event_data:
+      entity_id: switch.rfx
+    event_type: button_pressed
+    platform: event
+  condition:
+  - condition: state
+    entity_id: light.llum_safreig
+    state: 'off'
+  action:
+  - service: light.turn_on
+    entity_id:
+    - light.llum_safreig
+- id: llum_safreig_off
+  alias: llum safreig off
+  initial_state: true
+  trigger:
+  - event_data:
+      entity_id: switch.rfx
+    event_type: button_pressed
+    platform: event
+  condition:
+  - condition: state
+    entity_id: light.llum_safreig
+    state: 'on'
+  action:
+  - service: light.turn_off
+    entity_id:
+    - light.llum_safreig
+    
+# Escenes remotec
+
+- id: scene_1_on
+  alias: Escena 1
+  initial_state: true
+  trigger:
+  - platform: event
+    event_type: zwave.scene_activated
+    event_data:
+        entity_id: zwave.remotec_zrc90
+        scene_id: 3
+        scene_data: 0
+  action:
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.cuina
+      message: Good morning

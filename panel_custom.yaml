@@ -1,0 +1,11 @@
+  - name: alarm
+    sidebar_title: Alarma
+    sidebar_icon: mdi:security-home
+    config:
+      alarmid: alarm_control_panel.house ## USE THE SAME ID AS USED IN YOUR ALARM.YAML
+
+#  - name: floorplan
+#    sidebar_title: Planta
+#    sidebar_icon: mdi:home
+#    url_path: floorplan
+#    config: !include floorplan.yaml
