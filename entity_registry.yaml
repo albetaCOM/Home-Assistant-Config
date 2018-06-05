@@ -534,3 +534,47 @@ zwave.multisensor_distribuidor:
   name:
   platform: zwave
   unique_id: node-8
+sensor.alarm_type_4:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181249
+sensor.alarm_level_4:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181265
+binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor_2:
+  name:
+  platform: zwave
+  unique_id: 26-72057594479116288
+sensor.porta_garatge_temperature:
+  name:
+  platform: zwave
+  unique_id: 26-72057594479132690
+sensor.porta_garatge_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181281
+sensor.porta_garatge_heat:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181361
+sensor.porta_garatge_access_control:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181393
+sensor.porta_garatge_burglar:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181409
+sensor.porta_garatge_power_management:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181425
+zwave.porta_garatge:
+  name:
+  platform: zwave
+  unique_id: node-26
+media_player.chromecast_habitacio:
+  name:
+  platform: cast
+  unique_id: 08ce4bde-8949-55c2-d1e1-3c7c5703d6f8

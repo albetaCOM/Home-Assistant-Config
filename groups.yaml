@@ -4,7 +4,6 @@ default_view:
   entities:
 #    - device_tracker.alba_mobil
 #    - device_tracker.jc_mobil
-    - group.alarmclock
     - group.timbre
     - group.llums
     - group.ventiladors
@@ -16,6 +15,7 @@ default_view:
     - group.moviment
     - group.temperatures
     - group.battery_alert
+    - group.porta_garatge
     - alarm_control_panel.house
     - sensor.energy_meter_voltage
     - sensor.energy_meter_current
@@ -85,19 +85,21 @@ jardi:
     - automation.turn_off_light_when_sun_rises
     - automation.turn_on_light_when_sun_sets
     - camera.camera_jardi_davant
-    - cover.porta_garatge
 #    - switch.llum_jardi_switch
     - switch.llum_taula_jardi_switch
     - binary_sensor.porta_jardi_sensor
+    - group.porta_garatge
     - light.dimmer_jardi_level
     - light.llum_exterior_est
     - light.llum_exterior_sud
+    - sensor.porta_garatge_temperature
     
    
 habitacions:
   name: Habitacions
   view: yes
   entities:
+    - group.alarmclock
     - binary_sensor.multisensor_distribuidor_sensor
     - media_player.chromecast_habitacio
     - sensor.multisensor_distribuidor_luminance
@@ -199,6 +201,7 @@ entrades:
     - binary_sensor.balconera_est_sensor
     #- binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor
     - binary_sensor.kitchen_door
+    - binary_sensor.parking_door
     - binary_sensor.porta_entrada_sensor
     - binary_sensor.porta_jardi_sensor
     - binary_sensor.balconera_estudi_sensor
@@ -226,6 +229,7 @@ temperatures:
     - sensor.multisensor_menjador_temperature
     - sensor.termostat_temperature
     - sensor.fibaro_system_fgdw002_door_opening_sensor_2_temperature
+    - sensor.porta_garatge_temperature
     
 moviment:
   name: Moviment
@@ -273,3 +277,10 @@ alarmclock:
     - input_number.alarmminutes
     - input_boolean.alarmweekday
     - input_boolean.alarmweekon
+    
+porta_garatge:
+  name: Porta garatge
+  view: no
+  entities:
+    - cover.porta_garatge
+    - binary_sensor.parking_door

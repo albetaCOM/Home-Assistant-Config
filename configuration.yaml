@@ -26,7 +26,7 @@ http:
   # Secrets are defined in the file secrets.yaml
   api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-  # base_url: example.duckdns.org:8123
+  #base_url: https://caseta.duckdns.org:8443
   cors_allowed_origins:
     - http://192.168.1.99:7080
 
@@ -230,7 +230,23 @@ binary_sensor:
         friendly_name: 'Porta cuina'
         value_template: >-
             {{ states('sensor.fibaro_system_fgdw002_door_opening_sensor_2_access_control')|float > 22 }}
-          
+            
+      parking_door:
+        device_class: opening
+        friendly_name: 'Porta garatge'
+        value_template: >-
+            {{ states('sensor.porta_garatge_access_control')|float < 23 }}
+            
+
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_key
+    parse_mode: html
+    allowed_chat_ids:
+      - '558271365'
+      - '572405316'
+      - '-228716857'
+            
 notify:
   - name: html5
     platform: html5
@@ -250,8 +266,9 @@ notify:
     password: !secret mail_password
     recipient: !secret mail_recipient
     sender_name: My Home Assistant 
-
-
+  - name: telegram
+    platform: telegram
+    chat_id: -228716857
     
 zwave:
   usb_path: /dev/ttyACM0

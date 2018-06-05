@@ -132,6 +132,20 @@
         images:
         - /tmp/porta_jardi_oberta.jpg
  
+- id: resposta_hola
+  alias: 'Telegram bot that reply bon dia'
+  hide_entity: true
+  trigger:
+    platform: event
+    event_type: telegram_command
+    event_data:
+      command: '/hola'
+  action:
+  - service: notify.telegram
+    data:
+      message: 'Hola, que tal?'
+ 
+ 
  # Armem
 - id: control_acces_away
   alias: Set control acces away
@@ -139,10 +153,34 @@
   - platform: numeric_state
     entity_id: sensor.alarm_level_3
     above: 254
+  - platform: event
+    event_type: telegram_command
+    event_data:
+      command: '/arm'
   action:
   - service: alarm_control_panel.alarm_arm_away
     entity_id: alarm_control_panel.house
- 
+
+- id: siren_on
+  alias: Set Siren On
+  trigger:
+  - platform: event
+    event_type: telegram_command
+    event_data:
+      command: '/siren_on'
+  action:
+  - service: switch.turn_on
+    entity_id:
+    - switch.sirena_switch
+  - service: notify.telegram
+    data:
+      title: Siren
+      message: Siren set on
+      data:
+        inline_keyboard:
+          - 'Apaga sirena:/siren_off'
+
+    
 - id: set_armed
   alias: Set Alarm Armed
   trigger:
@@ -163,10 +201,17 @@
     - light.llum_sofa_1
     - light.llum_sofa_2
     - light.llum_safreig
-  - service: notify.html5
+  - service: cover.close_cover
+    entity_id:
+    - cover.porta_garatge    
+  - service: notify.telegram
     data:
       title: Alarma
-      message: Alarma en mode away
+      message: Armada en mode away
+      data:
+        inline_keyboard:
+          - 'Disarm:/disarm, Siren off:/siren_off'
+          #- 'Task 3:/command3, Task 4:/command4'
  
 # Desarmem
 - id: control_acces_home
@@ -176,15 +221,34 @@
     entity_id: sensor.alarm_level_3
     below: 1
   - platform: event
-    event_type: html5_notification.clicked
+    event_type: telegram_command
     event_data:
-      action: disarm
+      command: '/disarm'
   action:
   - service: alarm_control_panel.alarm_disarm
     entity_id: alarm_control_panel.house
     data:
       code: !secret alarm_code
-      
+
+- id: siren_off
+  alias: Set Siren Off
+  trigger:
+  - platform: event
+    event_type: telegram_command
+    event_data:
+      command: '/siren_off'
+  action:
+  - service: switch.turn_off
+    entity_id:
+    - switch.sirena_switch
+  - service: notify.telegram
+    data:
+      title: Siren
+      message: Siren set off
+      data:
+        inline_keyboard:
+          - 'Engega la sirena:/siren_on'
+            
 - id: set_home
   alias: Set Alarm Home
   trigger:
@@ -195,10 +259,14 @@
   - service: switch.turn_off
     entity_id:
     - switch.sirena_switch
-  - service: notify.html5
+  - service: notify.telegram
     data:
       title: Alarma
-      message: Alarma desarmada
+      message: Desarmada
+      data:
+        inline_keyboard:
+          - 'Arm:/arm, Siren on:/siren_on'
+          #- 'Task 3:/command3, Task 4:/command4'
      
 # Arming alarm
 - id: notify_on_alarm_arming
@@ -216,6 +284,7 @@
     data_template:
       entity_id: media_player.menjador
       message: Alarm will be armed in 30 seconds
+
 
 - id: notify_on_alarm_arming_20
   alias: Notify on alarm arming for 20s
@@ -254,6 +323,13 @@
     entity_id: alarm_control_panel.house
     to: warning
   action:
+  - service: notify.telegram
+    data:
+      title: Alarma
+      message: Warning de l'alarma
+      data:
+        inline_keyboard:
+          - 'Disarm:/disarm, Siren On:/siren_off'
   - service: media_player.volume_set
     entity_id: media_player.casa
     data:
@@ -319,6 +395,29 @@
     entity_id: alarm_control_panel.house
     to: triggered
   action:
+  - service: notify.telegram
+    data:
+      title: Alerta de intrusió
+      message: El sensor {{ trigger.to_state.attributes.changed_by }} ha estat activat.
+      data:
+        inline_keyboard:
+          - 'Disarm:/disarm, Siren off:/siren_off'         
+        photo:
+          - file: /tmp/porta_jardi_oberta.jpg
+            caption: Porta del jardi
+          - file: /tmp/pati_derrere1.jpg
+            caption: Foto jardi 1
+          - file: /tmp/pati_derrere2.jpg
+            caption: Foto jardi 2
+          - file: /tmp/pati_derrere3.jpg
+            caption: Foto jardi 3
+          - file: /tmp/entrada1.jpg
+            caption: Foto entrada 1
+          - file: /tmp/entrada2.jpg
+            caption: Foto entrada 2
+          - file: /tmp/entrada3.jpg
+            caption: Foto entrada 3
+          
   - service: media_player.volume_set
     entity_id: media_player.casa
     data:
@@ -327,16 +426,6 @@
     data_template:
       entity_id: media_player.casa
       message: Calling to the police.
-  - service: notify.html5
-    data:
-      title: Alarma
-      message: Intrusió. El sensor {{ trigger.to_state.attributes.changed_by }} ha
-        estat activat.
-      data:
-        actions:
-        - action: disarm
-          title: Disarm alarm
-          icon: mdi:security-home
   - service: notify.email
     data_template:
       title: Alerta de intrusió
@@ -581,3 +670,98 @@
     data_template:
       entity_id: media_player.cuina
       message: Good morning
+
+# Temperatures
+- id: Cal_pujar_persianes
+  alias: Cal pujar persianes
+  trigger:
+  # S'activa el trigger si la temperatura del menjador difereix en 1 grau de la setejada al termostat
+   - platform: template
+     value_template: >-
+       {{states('sensor.multisensor_menjador_temperature')|float < (states.climate.termostat_heating_1.attributes.temperature -1) and states('sensor.multisensor_menjador_temperature')|float > (states.climate.termostat_heating_1.attributes.temperature +1)}}
+   - platform: state
+     entity_id: alarm_control_panel.house
+     to: armed_away
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: >-
+            '{% if is_state("alarm_control_panel.house","armed_away") -%}
+                {%if states('sensor.multisensor_menjador_temperature')|float < states.climate.termostat_heating_1.attributes.temperature -%}
+                    {% if states('sensor.multisensor_menjador_temperature')|float < states('sensor.temps_temperature')|float -%}
+                        true
+                    {%- else -%}
+                        false
+                    {%- endif %}
+                {%- else -%}
+                    {% if states('sensor.multisensor_menjador_temperature')|float < states('sensor.temps_temperature')|float -%}
+                        false
+                    {%- else -%}
+                        true
+                    {%- endif %}
+                {%- endif %}
+            {%- endif %}'
+  action:
+  - service: cover.open_cover
+    entity_id:
+    - cover.persiana_est_level
+    - cover.persiana_estudi_level
+    - cover.persiana_sud_level
+
+- id: Cal_baixar_persianes
+  alias: Cal baixar persianes
+  trigger:
+  # S'activa el trigger si la temperatura del menjador difereix en 1 grau de la setejada al termostat
+   - platform: template
+     value_template: >-
+       {{states('sensor.multisensor_menjador_temperature')|float < (states.climate.termostat_heating_1.attributes.temperature -1) and states('sensor.multisensor_menjador_temperature')|float > (states.climate.termostat_heating_1.attributes.temperature +1)}}
+   - platform: state
+     entity_id: alarm_control_panel.house
+     to: armed_away
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: >-
+            '{% if is_state("alarm_control_panel.house","armed_away") -%}
+                {%if states('sensor.multisensor_menjador_temperature')|float < states.climate.termostat_heating_1.attributes.temperature -%}
+                    {% if states('sensor.multisensor_menjador_temperature')|float < states('sensor.temps_temperature')|float -%}
+                        false
+                    {%- else -%}
+                        true
+                    {%- endif %}
+                {%- else -%}
+                    {% if states('sensor.multisensor_menjador_temperature')|float < states('sensor.temps_temperature')|float -%}
+                        true
+                    {%- else -%}
+                        false
+                    {%- endif %}
+                {%- endif %}
+            {%- endif %}'
+  action:
+  - service: cover.close_cover
+    entity_id:
+    - cover.persiana_est_level
+    - cover.persiana_estudi_level
+    - cover.persiana_sud_level
+
+- id: pujem_persianes_home
+  alias: Pujem persianes al arribar a casa
+  trigger:
+  - platform: state
+    entity_id: alarm_control_panel.house
+    to: disarmed
+  condition:
+    condition: and
+    conditions:
+      - condition: sun
+        before: sunset
+        # Optional offset value
+        before_offset: "-02:00:00"
+  action:
+  - service: cover.open_cover
+    entity_id:
+    - cover.persiana_est_level
+    - cover.persiana_estudi_level
+    - cover.persiana_sud_level
