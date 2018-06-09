@@ -4,7 +4,6 @@ default_view:
   entities:
 #    - device_tracker.alba_mobil
 #    - device_tracker.jc_mobil
-    - group.alarmclock
     - group.timbre
     - group.llums
     - group.ventiladors
@@ -16,6 +15,7 @@ default_view:
     - group.moviment
     - group.temperatures
     - group.battery_alert
+    - group.porta_garatge
     - alarm_control_panel.house
     - sensor.energy_meter_voltage
     - sensor.energy_meter_current
@@ -31,6 +31,7 @@ default_view:
     - camera.camera_jardi_davant
     - media_player.casa
     - media_player.kodi
+    - media_player.spotify
 
 cuina:
   name: Cuina
@@ -46,6 +47,7 @@ menjador:
   view: yes
   entities:
     - binary_sensor.balconera_est_sensor
+    - binary_sensor.door_window_sensor_158d0001fa8c52
     - media_player.tele
     - binary_sensor.multisensor_menjador_sensor
     - binary_sensor.porta_entrada_sensor
@@ -85,19 +87,22 @@ jardi:
     - automation.turn_off_light_when_sun_rises
     - automation.turn_on_light_when_sun_sets
     - camera.camera_jardi_davant
-    - cover.porta_garatge
 #    - switch.llum_jardi_switch
-    - switch.llum_taula_jardi_switch
     - binary_sensor.porta_jardi_sensor
-    - light.dimmer_jardi_level
-    - light.llum_exterior_est
-    - light.llum_exterior_sud
+    - group.porta_garatge
+    - sensor.porta_garatge_temperature
+    - group.llums_jardi
     
    
 habitacions:
   name: Habitacions
   view: yes
   entities:
+    - binary_sensor.motion_sensor_158d000165741b
+    - sensor.temperature_158d000201934f
+    - sensor.illumination_7811dcb23635
+    - sensor.humidity_158d000201934f    
+    - group.alarmclock
     - binary_sensor.multisensor_distribuidor_sensor
     - media_player.chromecast_habitacio
     - sensor.multisensor_distribuidor_luminance
@@ -118,18 +123,21 @@ llums:
   name: Llums
   view: no
   entities:
+    - light.gateway_light_7811dcb23635
     - light.llum_distribuidor
     - light.llum_sofa_1
     - light.llum_sofa_2
     - light.llum_safreig
     - switch.wall_plug_switch
-    - switch.llum_taula_jardi_switch
+    - switch.taula_jardi_switch
     - switch.llums_cuina_switch_2
     - switch.llums_cuina_switch_3
     #- switch.llum_habitacio_matrimoni_switch
     - light.llum_exterior_est 
     - light.llum_exterior_sud
     - light.dimmer_jardi_level    
+    - switch.plug_158d0001a5d12c
+
     
 llums_jardi:
   name: Llums jardi
@@ -137,8 +145,10 @@ llums_jardi:
   entities:
     - light.llum_exterior_est 
     - light.llum_exterior_sud
-    - switch.llum_taula_jardi_switch
-    - light.dimmer_jardi_level  
+    - switch.taula_jardi_switch
+    - light.dimmer_jardi_level 
+    - switch.plug_158d0001a5d12c
+    
 
 llums_casa:
   name: Llums casa
@@ -197,8 +207,10 @@ entrades:
   view: no
   entities:
     - binary_sensor.balconera_est_sensor
+    - binary_sensor.door_window_sensor_158d0001fa8c52
     #- binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor
     - binary_sensor.kitchen_door
+    - binary_sensor.parking_door
     - binary_sensor.porta_entrada_sensor
     - binary_sensor.porta_jardi_sensor
     - binary_sensor.balconera_estudi_sensor
@@ -226,6 +238,8 @@ temperatures:
     - sensor.multisensor_menjador_temperature
     - sensor.termostat_temperature
     - sensor.fibaro_system_fgdw002_door_opening_sensor_2_temperature
+    - sensor.porta_garatge_temperature
+    - sensor.temperature_158d000201934f
     
 moviment:
   name: Moviment
@@ -235,6 +249,7 @@ moviment:
     - binary_sensor.multisensor_distribuidor_sensor
     - binary_sensor.multisensor_estudi_sensor
     - binary_sensor.multisensor_menjador_sensor
+    - binary_sensor.motion_sensor_158d000165741b
     
 humitats:
   name: Humitats
@@ -243,6 +258,7 @@ humitats:
     - sensor.temps_humidity
     - sensor.multisensor_distribuidor_relative_humidity
     - sensor.multisensor_estudi_relative_humidity
+    - sensor.humidity_158d000201934f
     
     
 lluminositat:
@@ -252,7 +268,8 @@ lluminositat:
     - sensor.multisensor_distribuidor_luminance
     - sensor.multisensor_estudi_luminance
     - sensor.multisensor_menjador_luminance
-    
+    - sensor.illumination_7811dcb23635
+
 energia:
   name: Energia
   view: yes
@@ -273,3 +290,10 @@ alarmclock:
     - input_number.alarmminutes
     - input_boolean.alarmweekday
     - input_boolean.alarmweekon
+    
+porta_garatge:
+  name: Porta garatge
+  view: no
+  entities:
+    - cover.porta_garatge
+    - binary_sensor.parking_door

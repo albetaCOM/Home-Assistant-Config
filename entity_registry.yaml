@@ -534,3 +534,79 @@ zwave.multisensor_distribuidor:
   name:
   platform: zwave
   unique_id: node-8
+sensor.alarm_type_4:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181249
+sensor.alarm_level_4:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181265
+binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor_2:
+  name:
+  platform: zwave
+  unique_id: 26-72057594479116288
+sensor.porta_garatge_temperature:
+  name:
+  platform: zwave
+  unique_id: 26-72057594479132690
+sensor.porta_garatge_sourcenodeid:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181281
+sensor.porta_garatge_heat:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181361
+sensor.porta_garatge_access_control:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181393
+sensor.porta_garatge_burglar:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181409
+sensor.porta_garatge_power_management:
+  name:
+  platform: zwave
+  unique_id: 26-72057594480181425
+zwave.porta_garatge:
+  name:
+  platform: zwave
+  unique_id: node-26
+media_player.chromecast_habitacio:
+  name:
+  platform: cast
+  unique_id: 08ce4bde-8949-55c2-d1e1-3c7c5703d6f8
+binary_sensor.door_window_sensor_158d0001fa8c52:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d0001fa8c52
+binary_sensor.motion_sensor_158d000165741b:
+  name: Moviment habitacio
+  platform: xiaomi_aqara
+  unique_id: status158d000165741b
+binary_sensor.switch_158d0001f9f472:
+  name:
+  platform: xiaomi_aqara
+  unique_id: status158d0001f9f472
+light.gateway_light_7811dcb23635:
+  name: Llum Xiaomi Gateway
+  platform: xiaomi_aqara
+  unique_id: rgb7811dcb23635
+sensor.temperature_158d000201934f:
+  name: Temperatura habitacio
+  platform: xiaomi_aqara
+  unique_id: temperature158d000201934f
+sensor.illumination_7811dcb23635:
+  name: Lluminositat habitacio
+  platform: xiaomi_aqara
+  unique_id: illumination7811dcb23635
+sensor.humidity_158d000201934f:
+  name: Humitat habitacio
+  platform: xiaomi_aqara
+  unique_id: humidity158d000201934f
+switch.plug_158d0001a5d12c:
+  name: LLum decorativa jardi
+  platform: xiaomi_aqara
+  unique_id: status158d0001a5d12c
