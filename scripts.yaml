@@ -37,3 +37,26 @@ notify_email:
       data_template:
         title: "{{ title }}"
         message: "{{ message }}"
+        
+notify_open_entrances:
+  sequence:
+    - service: tts.google_say
+      data_template:
+        message: "{%- for entity_id in states.group.entrades.attributes.entity_id -%}
+  {% set parts = entity_id.split('.') -%}
+  {%- if states(entity_id) == 'on' %}
+La {{ states[parts[0]][parts[1]].name }} està oberta{% endif -%} 
+{%- endfor %}"
+        language: 'es-ES'
+
+morning_music:
+    sequence:
+      - service: media_player.select_source
+        data_template:
+          entity_id: media_player.spotify
+          source: media_player.casa
+      - service: media_player.play_media
+        data_template:
+          entity_id: media_player.spotify
+          media_content_type: playlist
+          media_content_id: spotify:user:jcarles.lopez:playlist:0KRR5WEPibB77OVqr1xbz3

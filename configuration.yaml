@@ -72,6 +72,7 @@ logger:
   logs:
     requests.packages.urllib3.connectionpool: critical
     homeassistant.components.camera: critical
+    homeassistant.components.media_player.spotify: info
 
 zone:
   name: Feina Alba
@@ -177,9 +178,10 @@ media_player:
     client_id: !secret spotify_id
     client_secret: !secret spotify_secret
     #cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
-    #aliases:
-    #    abc123def456: 'Living Room'
-    #    9183abas000: 'Bed Room'
+    aliases:
+        e5a9f23c773e43c6b0732eedfa72da67: 'Cuina'
+        5c19e7f0-d779-4930-b978-cd3f76cf5974: 'Casa'
+        85ff116486d3cf44b3a71b6d50e350ab: 'Bedroom'
     
 cover:
   - platform: rfxtrx
@@ -300,6 +302,9 @@ shell_command:
   take_snapshot2_cam2: !secret cam2_snapshot_2
   take_snapshot3_cam2: !secret cam2_snapshot_3
   take_snapshot_porta_jardi: !secret snapshot_porta_jardi
+  set_keypad_home: !secret set_keypad_home_command
+  set_keypad_away: !secret set_keypad_away_command
+
       
 group: !include groups.yaml
 automation: !include automations.yaml

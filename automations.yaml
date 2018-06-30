@@ -109,6 +109,28 @@
     - switch.wall_plug_switch
     
 # Automatitzacions del sistema de seguretat
+- id: '1513678597078'
+  alias: Keypad to Armed
+  condition: []
+  trigger:
+  - entity_id: alarm_control_panel.house
+    platform: state
+    to: armed_away
+  action:
+  - service: shell_command.set_keypad_away
+  
+
+- id: '1513678726380'
+  alias: Keypad to Home
+  condition: []
+  trigger:
+  - entity_id: alarm_control_panel.house
+    platform: state
+    to: disarmed
+  action:
+  - service: shell_command.set_keypad_home
+
+
 - id: porta_jardi_snapshot
   alias: Snapshot when door open and armed
   initial_state: true
@@ -288,11 +310,20 @@
     entity_id: media_player.menjador
     data:
       volume_level: '.50'
+#  - service: tts.google_say
+#    data_template:
+#      entity_id: media_player.menjador
+#      message: La alarma se activará en 30 segundos.
+#      language: 'es'
   - service: tts.google_say
     data_template:
       entity_id: media_player.menjador
-      message: Alarm will be armed in 30 seconds
-
+      message: "La alarma se activará en 30 segundos. {%- for entity_id in states.group.entrades.attributes.entity_id -%}
+  {% set parts = entity_id.split('.') -%}
+  {%- if states(entity_id) == 'on' %}
+La {{ states[parts[0]][parts[1]].name }} está abierta. {% endif -%} 
+{%- endfor %}"
+      language: 'es'
 
 - id: notify_on_alarm_arming_20
   alias: Notify on alarm arming for 20s
@@ -305,7 +336,9 @@
   - service: tts.google_say
     data_template:
       entity_id: media_player.menjador
-      message: 5 seconds      
+      message: 5 segundos
+      language: 'es'
+      
       
 - id: notify_on_alarm_armed_home
   alias: Notify on alarm armed home
@@ -315,13 +348,15 @@
     to: armed_home
   action:
   - service: media_player.volume_set
-    entity_id: media_player.casa
+    entity_id: media_player.menjador
     data:
       volume_level: '.50'
   - service: tts.google_say
     data_template:
-      entity_id: media_player.casa
-      message: Alarm is armed in home mode
+      entity_id: media_player.menjador
+      message: Alarma armada en modo casa
+      language: 'es'
+
            
 # Alarm warning     
 - id: alarm_warning
@@ -339,13 +374,14 @@
         inline_keyboard:
           - 'Disarm:/disarm, Siren On:/siren_off'
   - service: media_player.volume_set
-    entity_id: media_player.casa
+    entity_id: media_player.menjador
     data:
       volume_level: '.50'
   - service: tts.google_say
     data_template:
-      entity_id: media_player.casa
-      message: Alarm will be triggered in 30 seconds
+      entity_id: media_player.menjador
+      message: La alarm se disparará en 30 segundos
+      language: 'es'      
   - service: notify.html5
     data:
       title: Alarma
@@ -376,7 +412,9 @@
   - service: tts.google_say
     data_template:
       entity_id: media_player.menjador
-      message: 5 seconds
+      message: 5 segundos
+      language: 'es'
+      
       
 - id: notify_on_alarm_disarm
   alias: Notify on alarm disarm
@@ -386,14 +424,15 @@
     to: disarmed
   action:
   - service: media_player.volume_set
-    entity_id: media_player.casa
+    entity_id: media_player.menjador
     data:
       volume_level: '.50'
   - service: tts.google_say
     data_template:
-      entity_id: media_player.casa
-      message: Alarm is disarmed.
-      
+      entity_id: media_player.menjador
+      message: La alarma está desactivada.
+      language: 'es'
+            
 # Alarm triggered
   
 - id: alarm_triggered
@@ -427,13 +466,14 @@
             caption: Foto entrada 3
           
   - service: media_player.volume_set
-    entity_id: media_player.casa
+    entity_id: media_player.menjador
     data:
       volume_level: '.80'
   - service: tts.google_say
     data_template:
-      entity_id: media_player.casa
-      message: Calling to the police.
+      entity_id: media_player.menjador
+      message: Llamando a la policia.
+      language: 'es'
   - service: notify.email
     data_template:
       title: Alerta de intrusió
@@ -531,10 +571,10 @@
     service: notify.html5
   - data:
       volume_level: '.80'
-    entity_id: media_player.casa
+    entity_id: media_player.menjador
     service: media_player.volume_set
   - data:
-      entity_id: media_player.casa
+      entity_id: media_player.menjador
       media_content_id: http://192.168.1.99:8123/local/doorbell_1.mp3
       media_content_type: audio/mp3
     service: media_player.play_media
@@ -551,12 +591,12 @@
     to: 'on'
   action:
   - service: media_player.volume_set
-    entity_id: media_player.casa
+    entity_id: media_player.menjador
     data:
       volume_level: '.60'
   - service: tts.google_say
     data_template:
-      entity_id: media_player.casa
+      entity_id: media_player.menjador
       message: Se ha abierto la puerta del jardín
       language: es
       
@@ -591,11 +631,21 @@
     entity_id: media_player.bedroom
     data:
       volume_level: '.50'
+
+  - service: media_player.select_source
+    data:
+      entity_id: media_player.spotify
+      source: Bedroom
   - service: media_player.play_media
     data:
-      entity_id: media_player.bedroom
-      media_content_id: http://192.168.1.99:8123/local/music/wakeup.mp3
-      media_content_type: audio/mp3
+      entity_id: media_player.spotify
+      media_content_type: playlist
+      media_content_id: spotify:user:jcarles.lopez:playlist:7xUrwkyDiXSYVf7Ux9XAnb
+#  - service: media_player.play_media
+#    data:
+#      entity_id: media_player.bedroom
+#      media_content_id: http://192.168.1.99:8123/local/music/wakeup.mp3
+#      media_content_type: audio/mp3
 
 - id: Weekend_alarm_clock
   alias: Wake me up with bedroom light transition for weekend days
@@ -663,6 +713,22 @@
     
 # Escenes remotec
 
+- id: '1510542576178'
+  alias: Monitor ZWave Events
+  initial_state: true
+  trigger:
+    - platform: event
+      event_type: zwave.node_event
+      event_data:
+        entity_id: zwave.access_control
+        basic_level: 1
+  action: 
+  - service: tts.google_say
+    data_template:
+      entity_id: media_player.cuina
+      message: '{{ trigger.event.entity_id }} se ha activado con valor {{ trigger.event.basic_level }} '
+      language: 'es'
+
 - id: scene_1_on
   alias: Escena 1
   initial_state: true
@@ -671,14 +737,59 @@
     event_type: zwave.scene_activated
     event_data:
         entity_id: zwave.remotec_zrc90
-        scene_id: 3
+        scene_id: 1
         scene_data: 0
   action:
   - service: tts.google_say
     data_template:
       entity_id: media_player.cuina
-      message: Good morning
+      message: Buenos días
+      language: 'es'
 
+
+- id: scene_8_on
+  alias: Escena 8
+  initial_state: true
+  trigger:
+  - platform: event
+    event_type: zwave.scene_activated
+    event_data:
+        entity_id: zwave.remotec_zrc90
+        scene_id: 8
+        scene_data: 2
+#Where the scenedata 0 is single-press, 2 is continued press, 1 is released from press and 3 is double-pressed (within a second).
+  action:
+#  - service: tts.google_say
+#    data_template:
+#      entity_id: media_player.menjador
+#      message: Playing kids music
+  - service: media_player.select_source
+    data_template:
+      entity_id: media_player.spotify
+      source: Cuina
+  - service: media_player.play_media
+    data_template:
+      entity_id: media_player.spotify
+      media_content_type: playlist
+      media_content_id: spotify:user:jcarles.lopez:playlist:3KbzT2V1dB6ucvhCdNBIGa      
+
+- id: scene_8_off
+  alias: Escena 8 off
+  initial_state: true
+  trigger:
+  - platform: event
+    event_type: zwave.scene_activated
+    event_data:
+        entity_id: zwave.remotec_zrc90
+        scene_id: 8
+        scene_data: 0
+#Where the scenedata 0 is single-press, 2 is continued press, 1 is released from press and 3 is double-pressed (within a second).
+  action:
+  - service: media_player.media_stop
+    data_template:
+      entity_id: media_player.spotify
+      
+      
 # Temperatures
 - id: Cal_pujar_persianes
   alias: Cal pujar persianes
@@ -773,3 +884,4 @@
     - cover.persiana_est_level
     - cover.persiana_estudi_level
     - cover.persiana_sud_level
+    

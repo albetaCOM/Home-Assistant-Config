@@ -47,19 +47,19 @@ light.exterior:
   platform: tradfri
   unique_id: group-7e0c555204400003-150999
 binary_sensor.multisensor_estudi_sensor:
-  name:
+  name: Moviment estudi
   platform: zwave
   unique_id: 2-72057594076463104
 sensor.multisensor_estudi_temperature:
-  name:
+  name: Temperatura estudi
   platform: zwave
   unique_id: 2-72057594076479506
 sensor.multisensor_estudi_luminance:
-  name:
+  name: Lluminositat estudi
   platform: zwave
   unique_id: 2-72057594076479538
 sensor.multisensor_estudi_relative_humidity:
-  name:
+  name: Humitat estudi
   platform: zwave
   unique_id: 2-72057594076479570
 sensor.multisensor_estudi_alarm_type:
@@ -79,19 +79,19 @@ sensor.multisensor_estudi_burglar:
   platform: zwave
   unique_id: 2-72057594077528225
 binary_sensor.balconera_estudi_sensor:
-  name:
+  name: Balconera estudi
   platform: zwave
   unique_id: 4-72057594110017536
 binary_sensor.balconera_est_sensor:
-  name:
+  name: Balconera est
   platform: zwave
   unique_id: 5-72057594126794752
 binary_sensor.porta_entrada_sensor:
-  name:
+  name: Porta entrada
   platform: zwave
   unique_id: 6-72057594143571968
 binary_sensor.multisensor_menjador_sensor:
-  name:
+  name: Moviment menjador
   platform: zwave
   unique_id: 7-72057594160349184
 sensor.multisensor_menjador_general:
@@ -271,7 +271,7 @@ sensor.energy_meter_current_2:
   platform: zwave
   unique_id: 15-144115188332527938
 sensor.termostat_temperature:
-  name:
+  name: Temperatura termostat
   platform: zwave
   unique_id: 16-72057594311360530
 climate.termostat_heating_1:
@@ -295,7 +295,7 @@ media_player.studio:
   platform: cast
   unique_id: cbe79b76-6b09-5258-da8d-9f3555e26aad
 sensor.multisensor_menjador_luminance:
-  name:
+  name: Lluminosist menjador
   platform: zwave
   unique_id: 7-72057594160365618
 sensor.control_acces_alarm_type:
@@ -311,7 +311,7 @@ switch.control_acces_switch:
   platform: zwave
   unique_id: 17-72057594327941120
 sensor.multisensor_menjador_temperature:
-  name:
+  name: Temperatura menjador
   platform: zwave
   unique_id: 7-72057594160365586
 sensor.control_acces_sourcenodeid:
@@ -351,19 +351,19 @@ sensor.multisensor_distribuidor_alarm_level:
   platform: zwave
   unique_id: 8-72057594178191377
 binary_sensor.multisensor_distribuidor_sensor:
-  name:
+  name: Moviment distribuidor
   platform: zwave
   unique_id: 8-72057594177126400
 sensor.multisensor_distribuidor_temperature:
-  name:
+  name: Temperatura distribuidor
   platform: zwave
   unique_id: 8-72057594177142802
 sensor.multisensor_distribuidor_luminance:
-  name:
+  name: Lluminositat distribuidor
   platform: zwave
   unique_id: 8-72057594177142834
 sensor.multisensor_distribuidor_relative_humidity:
-  name:
+  name: Humitat distribuidor
   platform: zwave
   unique_id: 8-72057594177142866
 sensor.multisensor_distribuidor_sourcenodeid:
@@ -387,7 +387,7 @@ binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor:
   platform: zwave
   unique_id: 22-72057594412007424
 sensor.fibaro_system_fgdw002_door_opening_sensor_2_temperature:
-  name:
+  name: Temperatura cuina
   platform: zwave
   unique_id: 22-72057594412023826
 sensor.fibaro_system_fgdw002_door_opening_sensor_2_sourcenodeid:
@@ -419,7 +419,7 @@ sensor.alarm_level_2:
   platform: zwave
   unique_id: 23-72057594429849617
 binary_sensor.sensor:
-  name:
+  name: Porta jardi
   platform: zwave
   unique_id: 23-72057594428784640
 sensor.heiman_door_sensor_hs1dsz_sourcenodeid:
@@ -547,7 +547,7 @@ binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor_2:
   platform: zwave
   unique_id: 26-72057594479116288
 sensor.porta_garatge_temperature:
-  name:
+  name: Temperatura garatge
   platform: zwave
   unique_id: 26-72057594479132690
 sensor.porta_garatge_sourcenodeid:
@@ -579,7 +579,7 @@ media_player.chromecast_habitacio:
   platform: cast
   unique_id: 08ce4bde-8949-55c2-d1e1-3c7c5703d6f8
 binary_sensor.door_window_sensor_158d0001fa8c52:
-  name:
+  name: Balconera sud
   platform: xiaomi_aqara
   unique_id: status158d0001fa8c52
 binary_sensor.motion_sensor_158d000165741b:
@@ -610,3 +610,31 @@ switch.plug_158d0001a5d12c:
   name: LLum decorativa jardi
   platform: xiaomi_aqara
   unique_id: status158d0001a5d12c
+light.level:
+  name: Ventilador sofà
+  platform: zwave
+  unique_id: 27-72057594495729665
+zwave.aeotec_dsc27103_micro_dimmer_2nd_edition:
+  name:
+  platform: zwave
+  unique_id: node-27
+binary_sensor.door_window_sensor_158d00020b53f3:
+  name: Finestra matrimoni
+  platform: xiaomi_aqara
+  unique_id: status158d00020b53f3
+binary_sensor.door_window_sensor_158d0002045b7c:
+  name: Finestra nens
+  platform: xiaomi_aqara
+  unique_id: status158d0002045b7c
+binary_sensor.door_window_sensor_158d00020b5358:
+  name: Finestra lavabo
+  platform: xiaomi_aqara
+  unique_id: status158d00020b5358
+binary_sensor.door_window_sensor_158d0002045c8d:
+  name: Finestra convidats
+  platform: xiaomi_aqara
+  unique_id: status158d0002045c8d
+binary_sensor.door_window_sensor_158d00020b5402:
+  name: Finestra menjador
+  platform: xiaomi_aqara
+  unique_id: status158d00020b5402

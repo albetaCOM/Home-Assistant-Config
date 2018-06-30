@@ -1,2 +1,32 @@
 binary_sensor.door_window_sensor_158d0001fa8c52:
-  friendly_name: Balconera_sud_sensor
+  device_class: window
+  friendly_name: Balconera sud
+binary_sensor.balconera_est_sensor:
+  device_class: window
+zwave.porta_entrada: {}
+binary_sensor.porta_entrada_sensor:
+  device_class: door
+binary_sensor.balconera_estudi_sensor:
+  device_class: window
+binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor_2:
+  device_class: garage_door
+binary_sensor.sensor:
+  device_class: door
+sensor.multisensor_distribuidor_relative_humidity:
+  device_class: humidity
+sensor.multisensor_estudi_relative_humidity:
+  device_class: humidity
+sensor.multisensor_menjador_luminance:
+  device_class: illuminance
+sensor.multisensor_distribuidor_luminance:
+  device_class: illuminance
+sensor.multisensor_estudi_luminance:
+  device_class: illuminance
+switch.plug_158d0001a5d12c:
+  device_class: light
+binary_sensor.multisensor_distribuidor_sensor:
+  device_class: motion
+binary_sensor.multisensor_estudi_sensor:
+  device_class: motion
+binary_sensor.multisensor_menjador_sensor:
+  device_class: motion

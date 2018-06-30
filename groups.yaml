@@ -32,6 +32,7 @@ default_view:
     - media_player.casa
     - media_player.kodi
     - media_player.spotify
+    - group.ventiladors
 
 cuina:
   name: Cuina
@@ -48,6 +49,7 @@ menjador:
   entities:
     - binary_sensor.balconera_est_sensor
     - binary_sensor.door_window_sensor_158d0001fa8c52
+    - binary_sensor.door_window_sensor_158d00020b5402
     - media_player.tele
     - binary_sensor.multisensor_menjador_sensor
     - binary_sensor.porta_entrada_sensor
@@ -58,7 +60,7 @@ menjador:
     - sensor.multisensor_menjador_luminance
     - sensor.multisensor_menjador_temperature
     - climate.termostat_heating_1
-    #- light.ventilador_sofa_level
+    - group.ventiladors
     - light.llum_sofa_1
     - light.llum_sofa_2
     - switch.wall_plug_switch
@@ -108,8 +110,12 @@ habitacions:
     - sensor.multisensor_distribuidor_luminance
     - sensor.multisensor_distribuidor_relative_humidity
     - sensor.multisensor_distribuidor_temperature
-    - light.llum_distribuidor
+    - light.yeelight_rgb_7c49eb0fb47c
     - media_player.bedroom
+    - binary_sensor.door_window_sensor_158d0002045b7c
+    - binary_sensor.door_window_sensor_158d0002045c8d 
+    - binary_sensor.door_window_sensor_158d00020b5358
+    - binary_sensor.door_window_sensor_158d00020b53f3
 
 cameres:
   name: Cameres
@@ -124,7 +130,7 @@ llums:
   view: no
   entities:
     - light.gateway_light_7811dcb23635
-    - light.llum_distribuidor
+    - light.yeelight_rgb_7c49eb0fb47c
     - light.llum_sofa_1
     - light.llum_sofa_2
     - light.llum_safreig
@@ -154,7 +160,6 @@ llums_casa:
   name: Llums casa
   view: no
   entities:
-    - light.llum_distribuidor
     - light.llum_sofa_1
     - light.llum_sofa_2
     - light.llum_safreig
@@ -162,6 +167,7 @@ llums_casa:
     - switch.llums_cuina_switch_3
     - switch.wall_plug_switch
     - switch.llum_habitacio_matrimoni_switch
+    - light.yeelight_rgb_7c49eb0fb47c
 
 interruptors:
   name: Interruptors
@@ -174,7 +180,7 @@ ventiladors:
   name: Ventiladors
   view: no
   entities:
-    - light.ventilador_sofa_level  
+    - light.level
     
 timbre:
   name: Timbre
@@ -208,6 +214,11 @@ entrades:
   entities:
     - binary_sensor.balconera_est_sensor
     - binary_sensor.door_window_sensor_158d0001fa8c52
+    - binary_sensor.door_window_sensor_158d0002045b7c
+    - binary_sensor.door_window_sensor_158d00020b53f3
+    - binary_sensor.door_window_sensor_158d0002045c8d
+    - binary_sensor.door_window_sensor_158d00020b5358
+    - binary_sensor.door_window_sensor_158d00020b5402
     #- binary_sensor.fibaro_system_fgdw002_door_opening_sensor_2_sensor
     - binary_sensor.kitchen_door
     - binary_sensor.parking_door
